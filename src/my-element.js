@@ -53,11 +53,11 @@ export class MyElement extends LitElement {
         @counter-component-count-zero=${this._onCounterZero}>
       </counter-component>
       <alert-component ?hidden=${!this._alertOpen}
+        alert-title="Counter Alert"
         message="Counter is at zero!"
         @alert-component-close=${this._onCloseAlert}>
       </alert-component>
     </div>
-      
     `
   }
 
@@ -84,6 +84,12 @@ export class MyElement extends LitElement {
         flex-direction: column;
         align-items: center;
         justify-content: center;     
+      }
+
+      alert-component {
+        --alert-title-color: blue;
+        --alert-message-color: red;
+        --alert-button-color: green;
       }
     `
   }

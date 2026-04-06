@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 
 export class AlertComponent extends LitElement {
     
@@ -9,31 +9,45 @@ export class AlertComponent extends LitElement {
     static get properties() {
         return {
             /**
+             * @description The title of the alert.
+             * @type {String}
+             * @attribute alert-title
+             */
+            alertTitle: {
+                type: String,
+                attribute: 'alert-title'
+            },
+            /**
              * @description The message to be displayed in the alert.
              * @type {String}
              */
             message: {
                 type: String
-            }
+            },
+            
         }
     };
 
     constructor() {
         super();
         this.message = "";
+        this.alertTitle = "";
     };
 
     render() {
         return html`
             <div class="alert-component-container">
                 <div class="alert-message-container">
-                    <h1>Alert Component</h1>
-                    <p>${this.message}</p>
+                    ${this.alertTitle ? html`
+                        <h1>${this.alertTitle}</h1>`: nothing
+                    }
+                    ${this.message ? html`
+                        <p>${this.message}</p>`: nothing
+                    }   
                 </div>
                 <div class="alert-button-container">
                     <button @click=${this._closeAlert}>Accept</button>
                 </div>
-
             </div>
         `;
     }
@@ -50,7 +64,7 @@ export class AlertComponent extends LitElement {
             :host([hidden]) {
                 display: none;
             }
-            
+
             :host {
                 width: 100vw;
                 height: 100vh;
@@ -67,7 +81,6 @@ export class AlertComponent extends LitElement {
                 align-items: center;
                 justify-content: center;
             }
-            
 
             .alert-component-container {
                 background-color: white;
@@ -86,6 +99,10 @@ export class AlertComponent extends LitElement {
 
             .alert-component-container .alert-message-container h1 {
                 margin: 0;
+                color: var(--alert-title-color, #ff1010);
+            }
+            .alert-component-container .alert-message-container p {
+                color: var(--alert-message-color, #000);
             }
 
             .alert-component-container .alert-button-container button {
@@ -93,9 +110,8 @@ export class AlertComponent extends LitElement {
                 border-radius: 5px;
                 border: none;
                 color: white;
-                background-color: #007BFF;
+                background-color: var(--alert-button-color, #007BFF);
                 cursor: pointer;
-
             }
         `
     ];
