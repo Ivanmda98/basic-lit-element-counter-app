@@ -1,103 +1,124 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from "lit";
 
 export class AlertComponent extends LitElement {
-    
-    static get is() {
-        return 'alert-component';
+  static get is() {
+    return "alert-component";
+  }
+
+  static get properties() {
+    return {
+      /**
+       * @description The title of the alert.
+       * @type {String}
+       * @attribute alert-title
+       */
+      alertTitle: {
+        type: String,
+        attribute: "alert-title",
+      },
+      /**
+       * @description The message to be displayed in the alert.
+       * @type {String}
+       */
+      message: {
+        type: String,
+      },
+
+      alertConfig: {
+        type: Object,
+        attribute: "alert-config",
+      },
     };
+  }
 
-    static get properties() {
-        return {
-            /**
-             * @description The message to be displayed in the alert.
-             * @type {String}
-             */
-            message: {
-                type: String
-            }
-        }
-    };
+  constructor() {
+    super();
+    this.message = "";
+    this.alertTitle = "";
+    this.alertConfig = {};
+  }
 
-    constructor() {
-        super();
-        this.message = "";
-    };
+  render() {
+    return html`
+      <div class="alert-component-container">
+        <div class="alert-message-container">
+          ${this.alertTitle ? html` <h1>${this.alertTitle}</h1>` : nothing}
+          ${this.message ? html` <p>${this.message}</p>` : nothing}
+        </div>
+        <div class="alert-button-container">
+          <button @click=${this._closeAlert}>Accept</button>
+        </div>
+        <div>
+          <p>${this.alertConfig?.description}</p>
+        </div>
+      </div>
+    `;
+  }
 
-    render() {
-        return html`
-            <div class="alert-component-container">
-                <div class="alert-message-container">
-                    <h1>Alert Component</h1>
-                    <p>${this.message}</p>
-                </div>
-                <div class="alert-button-container">
-                    <button @click=${this._closeAlert}>Accept</button>
-                </div>
+  _closeAlert() {
+    this.dispatchEvent(
+      new CustomEvent(`${AlertComponent.is}-close`, {
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
 
-            </div>
-        `;
-    }
+  static styles = [
+    css`
+      :host([hidden]) {
+        display: none;
+      }
 
-    _closeAlert() {
-        this.dispatchEvent(new CustomEvent(`${AlertComponent.is}-close`, {
-            bubbles: true,
-            composed: true
-        }));
-    }
+      :host {
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-    static styles = [
-        css`
-            :host([hidden]) {
-                display: none;
-            }
-            
-            :host {
-                width: 100vw;
-                height: 100vh;
-                box-sizing: border-box;
-                font-family: 'Arial', sans-serif;
-                margin: 0;
-                padding: 0;
-                position: fixed;
-                top: 0;
-                left: 0;
-                z-index: 1000;
-                background-color: rgba(0, 0, 0, 0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
+      .alert-component-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-            .alert-component-container {
-                background-color: white;
-                padding: 20px;
-                border-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .alert-component-container .alert-message-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
+      .alert-component-container .alert-message-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-            .alert-component-container .alert-message-container h1 {
-                margin: 0;
-            }
+      .alert-component-container .alert-message-container h1 {
+        margin: 0;
+        color: var(--alert-title-color, #ff1010);
+      }
+      .alert-component-container .alert-message-container p {
+        color: var(--alert-message-color, #000);
+      }
 
-            .alert-component-container .alert-button-container button {
-                padding: 10px 20px;
-                border-radius: 5px;
-                border: none;
-                color: white;
-                background-color: #007BFF;
-                cursor: pointer;
-
-            }
-        `
-    ];
+      .alert-component-container .alert-button-container button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        color: white;
+        background-color: var(--alert-button-color, #007bff);
+        cursor: pointer;
+      }
+    `,
+  ];
 }
-customElements.define('alert-component', AlertComponent);
+customElements.define("alert-component", AlertComponent);
