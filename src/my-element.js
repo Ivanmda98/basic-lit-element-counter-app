@@ -52,11 +52,10 @@ export class MyElement extends LitElement {
       <counter-component
         @counter-component-count-zero=${this._onCounterZero}>
       </counter-component>
-      ${this._alertOpen ? html`
-        <alert-component
-          message="Counter is at zero!"
-          @alert-component-close=${this._onCloseAlert}>
-        </alert-component>` : nothing}
+      <alert-component ?hidden=${!this._alertOpen}
+        message="Counter is at zero!"
+        @alert-component-close=${this._onCloseAlert}>
+      </alert-component>
     </div>
       
     `
