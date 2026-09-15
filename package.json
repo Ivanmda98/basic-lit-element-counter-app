@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@banking-portal-orioninc/components": "^0.1.0",
     "lit": "^3.3.2"
   },
   "devDependencies": {
