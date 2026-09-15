@@ -116,6 +116,7 @@ export class MyElement extends LitElement {
       { name: "Jessica", age: 25 },
       { name: "María", age: 28 },
       { name: "Andrés", age: 35 },
+      { name: "Ivan", age: 28 },
     ];
 
     //Solo me regresa el primer elemento que cumpla con la condicion
